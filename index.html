@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curriculum Vitae</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            transition: background 0.3s, color 0.3s;
+        }
+        .dark-mode {
+            background-color: #1a202c;
+            color: #f7fafc;
+        }
+        .light-mode {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+        .hidden {
+            display: none;
+        }
+        .cv-final {
+            background-color: inherit;
+            color: inherit;
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <div class="container mx-auto px-4 py-8 cv-final">
+        <div class="text-center">
+            <img src="https://raw.githubusercontent.com/obalderas/CV/main/imagenes/BBBBB_43e283b4-0f06-4e3c-a01f-7ad752f2ed57.jpeg" alt="Foto de perfil" class="w-32 h-32 mx-auto rounded-full shadow-lg">
+            <h1 id="name" class="text-4xl font-bold mt-4">Tu Nombre</h1>
+            <input type="text" id="name-input" placeholder="Escribe tu nombre" class="mt-2 p-2 border rounded w-full">
+            <button onclick="updateName()" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded">Actualizar Nombre</button>
+        </div>
+        
+        <div class="mt-8">
+            <h2 class="text-2xl font-semibold">Sobre Mí</h2>
+            <p id="about-text" class="mt-2 text-gray-700">Breve descripción sobre ti y tu experiencia profesional.</p>
+            <textarea id="about-input" placeholder="Escribe algo sobre ti" class="mt-2 p-2 border rounded w-full"></textarea>
+            <button onclick="updateAbout()" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded">Actualizar Sobre Mí</button>
+        </div>
+        
+        <div class="mt-8">
+            <h2 class="text-2xl font-semibold">Habilidades</h2>
+            <input type="text" id="skill-input" placeholder="Agregar habilidad" class="mt-2 p-2 border rounded w-full">
+            <button onclick="addSkill()" class="mt-2 px-4 py-2 bg-green-500 text-white rounded">Agregar Habilidad</button>
+            <div id="skills-list" class="grid grid-cols-3 gap-4 mt-4"></div>
+        </div>
+        
+        <div class="mt-8">
+            <h2 class="text-2xl font-semibold">Experiencia Profesional</h2>
+            <input type="text" id="experience-input" placeholder="Agregar experiencia" class="mt-2 p-2 border rounded w-full">
+            <button onclick="addExperience()" class="mt-2 px-4 py-2 bg-green-500 text-white rounded">Agregar Experiencia</button>
+            <ul id="experience-list" class="mt-4 list-disc list-inside"></ul>
+        </div>
+        
+        <div class="mt-8 text-center">
+            <button onclick="toggleDarkMode()" class="px-4 py-2 bg-blue-500 text-white rounded">Modo Oscuro / Claro</button>
+            <button onclick="showCV()" class="mt-2 px-4 py-2 bg-red-500 text-white rounded">Mostrar CV Final</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('light-mode');
+            localStorage.setItem('dark-mode', document.body.classList.contains('dark-mode'));
+        }
+        
+        function showCV() {
+            document.querySelectorAll("input, textarea, button").forEach(el => el.classList.add("hidden"));
+            document.querySelector(".cv-final").style.backgroundColor = getComputedStyle(document.body).backgroundColor;
+            document.querySelector(".cv-final").style.color = getComputedStyle(document.body).color;
+        }
+        
+        function updateName() {
+            const nameInput = document.getElementById("name-input").value;
+            document.getElementById("name").textContent = nameInput;
+        }
+        
+        function updateAbout() {
+            const aboutInput = document.getElementById("about-input").value;
+            document.getElementById("about-text").textContent = aboutInput;
+        }
+        
+        function addSkill() {
+            const skillInput = document.getElementById("skill-input").value;
+            if (skillInput.trim() !== "") {
+                const skillList = document.getElementById("skills-list");
+                const skillItem = document.createElement("div");
+                skillItem.className = "bg-gray-200 p-2 rounded text-center";
+                skillItem.textContent = skillInput;
+                skillList.appendChild(skillItem);
+                document.getElementById("skill-input").value = "";
+            }
+        }
+        
+        function addExperience() {
+            const experienceInput = document.getElementById("experience-input").value;
+            if (experienceInput.trim() !== "") {
+                const experienceList = document.getElementById("experience-list");
+                const experienceItem = document.createElement("li");
+                experienceItem.textContent = experienceInput;
+                experienceList.appendChild(experienceItem);
+                document.getElementById("experience-input").value = "";
+            }
+        }
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            if (localStorage.getItem('dark-mode') === 'true') {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.add('light-mode');
+            }
+        });
+    </script>
+</body>
+</html>
